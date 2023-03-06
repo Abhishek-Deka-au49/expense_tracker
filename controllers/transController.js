@@ -1,10 +1,26 @@
-const transectionModel = require("../models/transaction");
-
+const transactionModel = require("../models/transaction");
+const moment = require("moment")
 
 const getAllTransaction = async (req, res) => {
  try {
-   const transection = await transectionModel.find({});
-   res.status(200).json(transection)
+   const {frequency,selectedDate,type} = req.body
+   const transaction = await transactionModel.find({
+    ...(frequency !== "custom"
+    ? {
+        date: {
+          $gt: moment().subtract(Number(frequency), "d").toDate(),
+        },
+      }
+    : {
+        date: {
+          $gte: selectedDate[0],
+          $lte: selectedDate[1],
+        }
+      }),
+    userid: req.body.userid,
+    ...(type !== "all" && { type }),
+  });
+   res.status(200).json(transaction)
  } catch (error) {
    console.log(error)
    res.status(500).json(error);
@@ -16,10 +32,10 @@ const getAllTransaction = async (req, res) => {
 
 const addTransaction = async (req, res) => {
   try {
-    // const newTransection = new transectionModel(req.body);
-    const newTransection = new transectionModel(req.body);
-    await newTransection.save();
-    res.status(201).send("Transection Created");
+    // const newTransaction = new transactionModel(req.body);
+    const newTransaction = new transactionModel(req.body);
+    await newTransaction.save();
+    res.status(201).send("Transaction Created");
   } catch (error) {
     console.log(error);
     res.status(500).json(error);
@@ -29,6 +45,4 @@ const addTransaction = async (req, res) => {
 module.exports = {
   getAllTransaction,
   addTransaction,
-  editTransaction,
-  deleteTransaction,
 };

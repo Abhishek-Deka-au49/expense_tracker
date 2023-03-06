@@ -3,6 +3,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const dotenv = require("dotenv");
 const userRouter = require("./routes/userRoute");
+const transRouter = require("./routes/transRoute");
 
 const { connectDB } = require("./config/connectDb");
 
@@ -23,7 +24,7 @@ app.use(cors());
 //user routes
 app.use("/api/v1/users", userRouter);
 //transections routes
-
+app.use("/api/v1/transaction", transRouter);
 
 //port
 const PORT = 8080 || process.env.PORT;

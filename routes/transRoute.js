@@ -5,11 +5,11 @@ const { addTransaction,  getAllTransaction } = require("../controllers/transCont
 const router = express.Router();
 
 //routes
-//add transection POST MEthod
-router.post("/add-transection", addTransaction);
+//add transaction POST Method
+router.post("/add-transaction", addTransaction);
 
 
-//get transections
-router.post("/get-transection", getAllTransaction);
+//get transactions
+router.post("/get-transaction", getAllTransaction);
 
 module.exports = router;
